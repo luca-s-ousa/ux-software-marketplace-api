@@ -1,0 +1,23 @@
+services:
+  marketplacedb:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: lucas
+      POSTGRES_PASSWORD: local123
+      POSTGRES_DB: marketplacedb
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - db_data:/var/lib/postgresql/data
+  redis-marketplace:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  db_data:
+  redis_data:

@@ -1,0 +1,53 @@
+{
+  "name": "marketplace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env --experimental-strip-types --no-warnings src/server.ts",
+    "dev": "node --env-file=.env --experimental-strip-types --no-warnings --watch src/server.ts",
+    "build": "tsc",
+    "migrate:generate": "npx drizzle-kit generate --out ./drizzle/migrations",
+    "migrate:push": "npx drizzle-kit push",
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "drizzle-orm": "^0.44.5",
+    "drizzle-seed": "^0.3.1",
+    "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "pg-pool": "^3.10.1",
+    "redis": "^5.8.2",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.5.2",
+    "@types/pg": "^8.15.5",
+    "@types/uuid": "^10.0.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "drizzle-kit": "^0.31.4",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
