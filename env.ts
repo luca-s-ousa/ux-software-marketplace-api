@@ -5,6 +5,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string().startsWith("postgres://"),
   REDIS_URL: z.string().startsWith("redis://"),
   EXPIRE_TIME_REDIS: z.coerce.number(),
+  JWT_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
