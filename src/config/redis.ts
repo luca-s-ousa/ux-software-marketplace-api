@@ -1,7 +1,7 @@
 import { env } from "../../env.ts";
 import { createClient } from "redis";
 
-const redis = createClient({
+export const redis = createClient({
   url: env.REDIS_URL,
 });
 
