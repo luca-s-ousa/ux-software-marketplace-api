@@ -2,6 +2,7 @@
   "name": "marketplace",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node --env-file=.env --experimental-strip-types --no-warnings src/server.ts",
     "dev": "node --env-file=.env --experimental-strip-types --no-warnings --watch src/server.ts",
@@ -20,6 +21,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
+    "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
