@@ -16,18 +16,6 @@ export const registerNewUser = async (
 ) => {
   try {
     const { cpf, password, name, email, phone } = req.body;
-    console.log(req.body);
-
-    const existing = await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.cpf, cpf));
-
-    if (existing.length > 0)
-      return res.status(400).json({
-        success: false,
-        message: "Esse usuário já existe no sistema!",
-      });
 
     const hashed = await bcrypt.hash(password as string, 10);
     const [user] = await db
