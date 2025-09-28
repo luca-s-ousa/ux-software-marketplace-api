@@ -4,7 +4,7 @@ import { usersTable } from "../../drizzle/schema.ts";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { env } from "../../env.ts";
+import { env } from "../schemas/env.ts";
 
 export const login = async (req: express.Request, res: express.Response) => {
   try {

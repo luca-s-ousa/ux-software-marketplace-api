@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import { stringifyJson } from "../utils/json.ts";
 import { v4 as uuidv4 } from "uuid";
 import { redis } from "../config/redis.ts";
-import { env } from "../../env.ts";
+import { env } from "../schemas/env.ts";
 import { sendWebhook } from "../services/send.email.ts";
 
 export const registerNewUser = async (

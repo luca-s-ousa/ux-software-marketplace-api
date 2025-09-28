@@ -1,4 +1,4 @@
-import { env } from "../../env.ts";
+import { env } from "../schemas/env.ts";
 import { createClient } from "redis";
 
 export const redis = createClient({
