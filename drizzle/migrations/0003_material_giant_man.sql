@@ -1,0 +1,1 @@
+ALTER TABLE "products" ALTER COLUMN "categorie_id" DROP NOT NULL;

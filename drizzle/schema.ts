@@ -26,10 +26,12 @@ export const categoriesTable = pgTable("categories", {
 export const productsTable = pgTable("products", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
+  imgUrl: text("img_url"),
   description: varchar("description", { length: 500 }),
   price: integer("price").notNull(),
   stock: integer("stock").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  categorieId: uuid("categorie_id").references(() => categoriesTable.id),
 });
 
 export const cartsTable = pgTable("carts", {
