@@ -9,6 +9,7 @@
     "build": "tsc",
     "migrate:generate": "npx drizzle-kit generate",
     "migrate:push": "npx drizzle-kit push",
+    "seed": "node --env-file=.env --experimental-strip-types --no-warnings drizzle/seed.ts",
     "commit": "cz"
   },
   "config": {
