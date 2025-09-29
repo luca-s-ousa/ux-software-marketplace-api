@@ -6,6 +6,7 @@ declare global {
     export interface Request {
       user?: UserRequest;
       product?: Product;
+      cart?: Cart;
     }
   }
 }
