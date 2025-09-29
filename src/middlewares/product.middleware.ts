@@ -65,3 +65,13 @@ export const validateProductId = async (
     });
   }
 };
+
+export const normalizeProductNumbers = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  if (req.body.price) req.body.price = Number(req.body.price);
+  if (req.body.stock) req.body.stock = Number(req.body.stock);
+  next();
+};
