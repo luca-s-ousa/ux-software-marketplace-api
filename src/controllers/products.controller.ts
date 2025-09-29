@@ -1,9 +1,10 @@
 import express from "express";
 import type { ProductBodyParams } from "../types/products.ts";
 import { db } from "../config/db.ts";
-import { productsTable } from "../../drizzle/schema.ts";
+import { categoriesTable, productsTable } from "../../drizzle/schema.ts";
 import path from "path";
 import { uploadImg, urlImgProduct } from "../services/minio.ts";
+import { and, eq, ilike, sql } from "drizzle-orm";
 
 export const addNewProduct = async (
   req: express.Request,
@@ -56,6 +57,92 @@ export const addNewProduct = async (
     });
   } catch (error) {
     console.error("Erro ao adicionar um novo produto: ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Erro Inesperado",
+    });
+  }
+};
+
+export const getAllProducts = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const { categorie, search, limit = "10", page = "1" } = req.query;
+    const offset = (Number(page) - 1) * Number(limit);
+
+    const conditions = [];
+    if (search) {
+      const searchNormalized = (search as string).toLowerCase().trim();
+      conditions.push(
+        ilike(sql`LOWER(${productsTable.name})`, `%${searchNormalized}%`)
+      );
+    }
+
+    if (categorie) {
+      const normalizedCat = String(categorie).trim().toLowerCase();
+
+      const [categorieRow] = await db
+        .select()
+        .from(categoriesTable)
+        .where(
+          ilike(sql`LOWER(${categoriesTable.name})`, `%${normalizedCat}%`)
+        );
+
+      if (!categorieRow) {
+        return res.status(404).json({
+          success: false,
+          message: "Categoria não encontrada",
+          data: {
+            items: [],
+            total: 0,
+            page: Number(page),
+            limit: Number(limit),
+          },
+        });
+      }
+      conditions.push(eq(productsTable.categorieId, categorieRow.id));
+    }
+
+    const products = await db
+      .select({
+        id: productsTable.id,
+        name: productsTable.name,
+        imgUrl: productsTable.imgUrl,
+        description: productsTable.description,
+        price: productsTable.price,
+        stock: productsTable.stock,
+        createdAt: productsTable.createdAt,
+        categorieId: productsTable.categorieId,
+        categorieName: categoriesTable.name,
+      })
+      .from(productsTable)
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .leftJoin(
+        categoriesTable,
+        eq(productsTable.categorieId, categoriesTable.id)
+      )
+      .limit(Number(limit))
+      .offset(offset);
+
+    const [{ count }] = await db
+      .select({ count: sql`COUNT(*)` })
+      .from(productsTable)
+      .where(conditions.length > 0 ? and(...conditions) : undefined);
+
+    return res.status(200).json({
+      success: true,
+      message: "Produtos listados com sucesso",
+      data: {
+        products,
+        total: Number(count),
+        page: Number(page),
+        limit: Number(limit),
+      },
+    });
+  } catch (error) {
+    console.error("Erro ao listar produtos: ", error);
     return res.status(500).json({
       success: false,
       message: "Erro Inesperado",
