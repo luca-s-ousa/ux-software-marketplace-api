@@ -5,6 +5,7 @@ import { connectRedis } from "./config/redis.ts";
 import usersRoutes from "./routes/users.route.ts";
 import authRoutes from "./routes/auth.route.ts";
 import productsRoutes from "./routes/products.route.ts";
+import cartsRoutes from "./routes/carts.route.ts";
 
 const app = express();
 
@@ -16,6 +17,7 @@ const PORT = env.PORT;
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
+app.use("/api/carts", cartsRoutes);
 
 const startup = async () => {
   await connectRedis();
