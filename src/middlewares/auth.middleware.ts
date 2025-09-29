@@ -19,18 +19,12 @@ export const authGuard = (
     const payload = jwt.verify(token, env.JWT_SECRET as string) as UserRequest;
 
     req.user = {
-      id: payload.id,
+      userId: payload.userId,
       email: payload.email,
       isAdmin: payload.isAdmin,
     };
     next();
   } catch (err) {
-    // if (err instanceof TokenExpiredError) {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: "Sessão expirada",
-    //   });
-    // }
     return res.status(401).json({
       success: false,
       message: "Token inválido",
