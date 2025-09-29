@@ -105,3 +105,24 @@ export const addItemToCart = async (
     });
   }
 };
+
+export const removeItemFromCart = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const cartItemId = req.cartItem!.id as string;
+
+    await db.delete(cartItemsTable).where(eq(cartItemsTable.id, cartItemId));
+
+    return res.status(200).json({
+      success: true,
+      message: "Item removido do carrinho",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Erro inesperado",
+    });
+  }
+};
