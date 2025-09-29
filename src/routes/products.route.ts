@@ -35,7 +35,13 @@ router.post(
 
 router.get("/", getAllProducts);
 router.get("/:id", validateProductId, getProductById);
-router.delete("/:id", validateProductId, deleteProductById);
+router.delete(
+  "/:id",
+  authGuard,
+  adminOnly,
+  validateProductId,
+  deleteProductById
+);
 router.put(
   "/:id",
   upload.single("file"),
