@@ -63,7 +63,6 @@ async function seed() {
 
     return {
       name: `${base.name} #${i + 1}`,
-      imgUrl: `https://picsum.photos/300/200?random=${i + 1000}`, // imagens diferentes
       description: base.description,
       price: base.price + Math.floor(Math.random() * 500), // preço variado
       stock: Math.floor(Math.random() * 100) + 1, // estoque entre 1 e 100
