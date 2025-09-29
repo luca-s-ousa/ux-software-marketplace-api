@@ -75,3 +75,27 @@ export const normalizeProductNumbers = (
   if (req.body.stock) req.body.stock = Number(req.body.stock);
   next();
 };
+
+export const validateStockProduct = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const productId = req.body.productId as string;
+
+  const quantity = Number(req.body.quantity);
+
+  const [product] = await db
+    .select()
+    .from(productsTable)
+    .where(eq(productsTable.id, productId));
+
+  if (product.stock < quantity) {
+    return res.status(400).json({
+      success: false,
+      message: "Estoque insuficiente",
+    });
+  }
+
+  next();
+};
