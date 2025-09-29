@@ -4,6 +4,7 @@ import { adminOnly } from "../middlewares/users.middleware.ts";
 import multer from "multer";
 import {
   addNewProduct,
+  deleteProductById,
   getAllProducts,
   getProductById,
 } from "../controllers/products.controller.ts";
@@ -27,5 +28,6 @@ router.post(
 
 router.get("/", getAllProducts);
 router.get("/:id", validateProductId, getProductById);
+router.delete("/:id", validateProductId, deleteProductById);
 
 export default router;
