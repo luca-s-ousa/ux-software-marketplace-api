@@ -44,7 +44,7 @@ export const cartsTable = pgTable("carts", {
 });
 
 export const cartItemsTable = pgTable("cart_items", {
-  id: uuid("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
   cartId: uuid("cart_id")
     .notNull()
     .references(() => cartsTable.id),
