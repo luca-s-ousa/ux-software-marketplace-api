@@ -1,5 +1,5 @@
 import express from "express";
-import type { ProductBodyParams } from "../types/products.ts";
+import type { Product, ProductBodyParams } from "../types/products.ts";
 import { db } from "../config/db.ts";
 import { categoriesTable, productsTable } from "../../drizzle/schema.ts";
 import path from "path";
@@ -143,6 +143,24 @@ export const getAllProducts = async (
     });
   } catch (error) {
     console.error("Erro ao listar produtos: ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Erro Inesperado",
+    });
+  }
+};
+
+export const getProductById = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const product = req.product as Product;
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Produto encontrado", data: product });
+  } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Erro Inesperado",
