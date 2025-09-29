@@ -7,10 +7,17 @@ import {
   deleteProductById,
   getAllProducts,
   getProductById,
+  updateProcuctById,
 } from "../controllers/products.controller.ts";
-import { addNewProductSchema } from "../schemas/products.ts";
+import {
+  addNewProductSchema,
+  updateProductSchema,
+} from "../schemas/products.ts";
 import { validate } from "../middlewares/zod.middleware.ts";
-import { validateProductId } from "../middlewares/product.middleware.ts";
+import {
+  normalizeProductNumbers,
+  validateProductId,
+} from "../middlewares/product.middleware.ts";
 
 const router = express.Router();
 
@@ -29,5 +36,15 @@ router.post(
 router.get("/", getAllProducts);
 router.get("/:id", validateProductId, getProductById);
 router.delete("/:id", validateProductId, deleteProductById);
+router.put(
+  "/:id",
+  upload.single("file"),
+  normalizeProductNumbers,
+  validate(updateProductSchema),
+  authGuard,
+  adminOnly,
+  validateProductId,
+  updateProcuctById
+);
 
 export default router;
