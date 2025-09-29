@@ -27,3 +27,13 @@ export const uploadImg = async (
 ) => {
   await minioClient.putObject(bucket, path, fileBuffer, fileSize);
 };
+
+export const deleteImg = async (bucket: string, path: string) => {
+  await minioClient.removeObject(bucket, path);
+
+  return {
+    success: true,
+    message: "Imagem deletada com sucesso!",
+    data: [],
+  } as MinioResponse;
+};
