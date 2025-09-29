@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { redis } from "../config/redis.ts";
 import { env } from "../schemas/env.ts";
 import { sendWebhook } from "../services/send.email.ts";
+import { createCart } from "../utils/carts.ts";
 
 export const registerNewUser = async (
   req: express.Request,
@@ -22,6 +23,8 @@ export const registerNewUser = async (
       .insert(usersTable)
       .values({ name, email, password: hashed, cpf, phone })
       .returning();
+
+    await createCart(user.id);
 
     const { password: _, ...dataUser } = user;
 
