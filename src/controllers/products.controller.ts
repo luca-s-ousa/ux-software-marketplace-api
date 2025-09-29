@@ -41,6 +41,7 @@ export const addNewProduct = async (
       const [productUpdated] = await db
         .update(productsTable)
         .set({ imgUrl: urlImg.data[0]["link"] })
+        .where(eq(productsTable.id, idProduct))
         .returning();
 
       return res.status(200).json({
