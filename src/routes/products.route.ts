@@ -5,9 +5,11 @@ import multer from "multer";
 import {
   addNewProduct,
   getAllProducts,
+  getProductById,
 } from "../controllers/products.controller.ts";
 import { addNewProductSchema } from "../schemas/products.ts";
 import { validate } from "../middlewares/zod.middleware.ts";
+import { validateProductId } from "../middlewares/product.middleware.ts";
 
 const router = express.Router();
 
@@ -24,5 +26,6 @@ router.post(
 );
 
 router.get("/", getAllProducts);
+router.get("/:id", validateProductId, getProductById);
 
 export default router;
