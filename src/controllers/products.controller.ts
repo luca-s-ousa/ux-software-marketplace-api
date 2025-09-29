@@ -3,7 +3,7 @@ import type { Product, ProductBodyParams } from "../types/products.ts";
 import { db } from "../config/db.ts";
 import { categoriesTable, productsTable } from "../../drizzle/schema.ts";
 import path from "path";
-import { uploadImg, urlImgProduct } from "../services/minio.ts";
+import { deleteImg, uploadImg, urlImgProduct } from "../services/minio.ts";
 import { and, eq, ilike, sql } from "drizzle-orm";
 
 export const addNewProduct = async (
@@ -160,6 +160,32 @@ export const getProductById = async (
     return res
       .status(200)
       .json({ success: true, message: "Produto encontrado", data: product });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Erro Inesperado",
+    });
+  }
+};
+
+export const deleteProductById = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const product = req.product as Product;
+
+    await db.delete(productsTable).where(eq(productsTable.id, product.id!));
+
+    if (product.imgUrl) {
+      const ext = path.extname(product.imgUrl);
+      await deleteImg("marketplace-ux", `products/${product.id}${ext}`);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Produto deletado com sucesso!",
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
