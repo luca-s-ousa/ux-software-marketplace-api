@@ -64,6 +64,63 @@ export const addNewProduct = async (
   }
 };
 
+export const updateProcuctById = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { id } = req.params;
+  const { name, price, stock, description } = req.body as ProductBodyParams;
+  const categorieId = req.query.categorieId as string;
+  const file = req.file;
+  console.log(typeof price, stock);
+  try {
+    const [product] = await db
+      .update(productsTable)
+      .set({
+        name,
+        price: price || undefined,
+        stock: stock || undefined,
+        description,
+        categorieId: categorieId || null,
+      })
+      .where(eq(productsTable.id, id))
+      .returning();
+
+    if (file) {
+      const { id: idProduct } = product;
+
+      const ext = path.extname(file.originalname);
+
+      const objectName = `${idProduct}${ext}`;
+      const bucket = "marketplace-ux";
+
+      await uploadImg(bucket, `products/${objectName}`, file.buffer, file.size);
+
+      const urlImg = urlImgProduct(bucket, `products/${objectName}`);
+
+      const [productUpdated] = await db
+        .update(productsTable)
+        .set({ imgUrl: urlImg.data[0]["link"] })
+        .where(eq(productsTable.id, idProduct))
+        .returning();
+
+      return res.status(200).json({
+        success: true,
+        message: "Produto atualizado com sucesso",
+        data: { ...productUpdated },
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Produto atualizado com sucesso",
+      data: { ...product },
+    });
+  } catch (error) {
+    console.log(typeof price);
+  }
+};
+
 export const getAllProducts = async (
   req: express.Request,
   res: express.Response
