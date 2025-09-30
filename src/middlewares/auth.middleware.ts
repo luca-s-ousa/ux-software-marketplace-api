@@ -20,6 +20,7 @@ export const authGuard = (
 
     req.user = {
       userId: payload.userId,
+      name: payload.name,
       email: payload.email,
       isAdmin: payload.isAdmin,
     };
