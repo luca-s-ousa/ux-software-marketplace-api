@@ -38,6 +38,7 @@ export const login = async (req: express.Request, res: express.Response) => {
       {
         userId: user.id,
         email: user.email,
+        name: user.name,
         isAdmin: user.isAdmin,
       },
       env.JWT_SECRET,
