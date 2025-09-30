@@ -72,3 +72,66 @@ export const alreadyExistsUserWithCpf = async (
     });
   }
 };
+
+export const validateTokenQuery = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const { token } = req.query;
+
+  if (
+    !token ||
+    typeof token !== "string" ||
+    !token.match(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+    )
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Token inválido",
+    });
+  }
+
+  next();
+};
+
+export const validateEmailQuery = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const email = req.query.email as string;
+
+  if (
+    !email ||
+    typeof email !== "string" ||
+    !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Email inválido",
+    });
+  }
+
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email))
+    .limit(1);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "Usuário não encontrado",
+    });
+  }
+
+  req.user = {
+    ...user,
+    userId: user.id,
+    createdAt: user.createdAt.toISOString(),
+  } as UserRequest;
+
+  next();
+};
