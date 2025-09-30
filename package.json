@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "docker": "node dist/server.js",
-    "start": "node dist/server.js",
+    "docker": "ts-node src/server.ts",
+    "start": "ts-node src/server.ts",
     "dev": "node --env-file=.env --experimental-strip-types --no-warnings --watch src/server.ts",
     "build": "tsc",
     "migrate:generate": "npx drizzle-kit generate",
