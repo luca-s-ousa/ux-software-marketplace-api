@@ -22,9 +22,16 @@ export const getAllItensCart = async (
         quantity: cartItemsTable.quantity,
         cartId: cartsTable.id,
         userId: cartsTable.userId,
+        name: productsTable.name,
+        description: productsTable.description,
+        price: productsTable.price,
+        stock: productsTable.stock,
+        imgUrl: productsTable.imgUrl,
+        createdAt: productsTable.createdAt,
       })
       .from(cartItemsTable)
       .leftJoin(cartsTable, eq(cartItemsTable.cartId, cartsTable.id))
+      .leftJoin(productsTable, eq(cartItemsTable.productId, productsTable.id))
       .where(eq(cartsTable.userId, userId));
 
     return res.status(200).json({
