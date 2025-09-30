@@ -18,4 +18,4 @@ RUN npm run build
 EXPOSE 7383
 
 # Roda migrations e inicia a aplicação
-CMD ["sh", "-c", "npm run migrate:generate && npm run migrate:push && ts-node src/server.ts"]
+CMD ["sh", "-c", "npm run migrate:generate && npm run migrate:push && npm run start"]
