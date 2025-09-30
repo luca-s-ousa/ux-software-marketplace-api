@@ -10,6 +10,6 @@ export type User = {
   createdAt: string;
 };
 
-export type UserRequest = Pick<User, "id" | "email" | "isAdmin"> & {
+export type UserRequest = Pick<User, "id" | "email" | "name" | "isAdmin"> & {
   userId: string;
 };
