@@ -1,20 +1,22 @@
-# Use uma imagem oficial do Node.js
+# Imagem Node.js
 FROM node:20-alpine
 
-# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copie package.json e package-lock.json
+# Copia package.json e package-lock.json
 COPY package*.json ./
 
-# Instale as dependências
-RUN npm install
+# Instala dependências (produção)
+RUN npm install --production
 
-# Copie todo o código da aplicação
+# Copia o restante do código
 COPY . .
 
-# Exponha a porta que sua aplicação usa
+# Compila TypeScript
+RUN npm run build
+
+# Porta do app
 EXPOSE 7383
 
-# Comando para rodar a aplicação em desenvolvimento
-CMD ["npm", "run", "dev"]
+# Roda migrations não destrutivas e inicia a API
+CMD ["sh", "-c", "npm run migrate:generate &&npm run migrate:push && node dist/server.js"]
