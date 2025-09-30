@@ -1,39 +1,20 @@
-# --------------------------
-# Etapa 1: Build
-# --------------------------
-FROM node:20-slim AS build
+# Use uma imagem oficial do Node.js
+FROM node:20-alpine
 
+# Defina o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia package.json e package-lock.json para usar cache
+# Copie package.json e package-lock.json
 COPY package*.json ./
 
-# Instala todas as dependências (dev + prod) para o build
-RUN npm ci
+# Instale as dependências
+RUN npm install
 
-# Copia o restante do código e builda
+# Copie todo o código da aplicação
 COPY . .
-RUN npm run build
 
-# --------------------------
-# Etapa 2: Produção Minimalista
-# --------------------------
-FROM node:20-slim AS production
-
-WORKDIR /app
-
-# Copia apenas package.json e package-lock.json
-COPY --from=build /app/package*.json ./
-
-# Instala apenas dependências de produção
-RUN npm install --omit=dev
-
-# Copia apenas o build final
-COPY --from=build /app/dist ./dist
-
-# Copia arquivos necessários (opcional)
-# COPY .env .env
-
+# Exponha a porta que sua aplicação usa
 EXPOSE 7383
 
-CMD ["node", "dist/index.js"]
+# Comando para rodar a aplicação em desenvolvimento
+CMD ["npm", "run", "dev"]
