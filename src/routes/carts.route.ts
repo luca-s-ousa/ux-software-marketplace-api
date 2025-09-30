@@ -20,8 +20,8 @@ const router = express.Router();
  * @swagger
  * /cart:
  *   get:
- *     summary: Listar itens do carrinho
- *     description: Retorna todos os itens do carrinho do usuário autenticado.
+ *     summary: Listar itens do carrinho do usuário
+ *     description: Retorna todos os itens do carrinho do usuário autenticado, incluindo detalhes do produto.
  *     tags:
  *       - Carrinho
  *     security:
@@ -50,6 +50,21 @@ const router = express.Router();
  *                         type: string
  *                         format: uuid
  *                         example: "a9f1b2c3-4567-8901-bcde-f1234567890a"
+ *                       name:
+ *                         type: string
+ *                         example: "Notebook Dell Inspiron"
+ *                       description:
+ *                         type: string
+ *                         example: "Notebook potente para trabalho e estudos."
+ *                       price:
+ *                         type: number
+ *                         example: 3999.90
+ *                       stock:
+ *                         type: integer
+ *                         example: 15
+ *                       imgUrl:
+ *                         type: string
+ *                         example: "https://cdn.meusite.com/produtos/notebook.jpg"
  *                       quantity:
  *                         type: integer
  *                         example: 2
@@ -61,8 +76,12 @@ const router = express.Router();
  *                         type: string
  *                         format: uuid
  *                         example: "u1234567-8901-2345-bcde-f1234567890a"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2025-09-29T18:30:00Z"
  *       401:
- *         description: Não autorizado (token inválido ou ausente)
+ *         description: Usuário não autenticado
  *         content:
  *           application/json:
  *             schema:
@@ -73,7 +92,7 @@ const router = express.Router();
  *                   example: false
  *                 message:
  *                   type: string
- *                   example: "Token inválido ou não fornecido"
+ *                   example: "Token inválido"
  *       500:
  *         description: Erro inesperado no servidor
  *         content:
