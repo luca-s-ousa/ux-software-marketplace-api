@@ -6,6 +6,7 @@ import usersRoutes from "./routes/users.route.ts";
 import authRoutes from "./routes/auth.route.ts";
 import productsRoutes from "./routes/products.route.ts";
 import cartsRoutes from "./routes/carts.route.ts";
+import { swaggerDocs } from "./swagger.ts";
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/carts", cartsRoutes);
+// Swagger
+swaggerDocs(app);
 
 const startup = async () => {
   await connectRedis();
