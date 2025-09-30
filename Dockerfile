@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # Remove devDependencies para produção
-RUN npm prune --production
+# RUN npm prune --production
 
 EXPOSE 7383
 
